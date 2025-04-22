@@ -749,6 +749,7 @@ def _get_callsite_filename(module: str, frame: FrameType) -> Any:
 
 
 def _get_callsite_module(module: str, frame: FrameType) -> Any:
+    1/0
     return inspect.getmodule(frame.f_code).__name__
 
 
