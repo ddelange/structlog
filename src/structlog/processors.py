@@ -726,6 +726,7 @@ class CallsiteParameter(enum.Enum):
     #: of `logging.LogRecord` objects and will be the basename, without
     #: extension, of the full path to the python source file of the callsite.
     MODULE = "module"
+    FULL_MODULE = "full_module"
     #: The name of the function that the callsite was in.
     FUNC_NAME = "func_name"
     #: The line number of the callsite.
@@ -749,7 +750,10 @@ def _get_callsite_filename(module: str, frame: FrameType) -> Any:
 
 
 def _get_callsite_module(module: str, frame: FrameType) -> Any:
-    1/0
+    return os.path.splitext(os.path.basename(frame.f_code.co_filename))[0]
+
+
+def _get_callsite_full_module(module: str, frame: FrameType) -> Any:
     return inspect.getmodule(frame.f_code).__name__
 
 
@@ -823,6 +827,7 @@ class CallsiteParameterAdder:
         CallsiteParameter.PATHNAME: _get_callsite_pathname,
         CallsiteParameter.FILENAME: _get_callsite_filename,
         CallsiteParameter.MODULE: _get_callsite_module,
+        CallsiteParameter.FULL_MODULE: _get_callsite_full_module,
         CallsiteParameter.FUNC_NAME: _get_callsite_func_name,
         CallsiteParameter.LINENO: _get_callsite_lineno,
         CallsiteParameter.THREAD: _get_callsite_thread,
@@ -834,6 +839,7 @@ class CallsiteParameterAdder:
         CallsiteParameter.PATHNAME: "pathname",
         CallsiteParameter.FILENAME: "filename",
         CallsiteParameter.MODULE: "module",
+        CallsiteParameter.FULL_MODULE: "full_module",
         CallsiteParameter.FUNC_NAME: "funcName",
         CallsiteParameter.LINENO: "lineno",
         CallsiteParameter.THREAD: "thread",
