@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import datetime
 import enum
+import inspect
 import json
 import logging
 import operator
@@ -748,7 +749,7 @@ def _get_callsite_filename(module: str, frame: FrameType) -> Any:
 
 
 def _get_callsite_module(module: str, frame: FrameType) -> Any:
-    return os.path.splitext(os.path.basename(frame.f_code.co_filename))[0]
+    return inspect.getmodule(frame.f_code).__name__
 
 
 def _get_callsite_func_name(module: str, frame: FrameType) -> Any:
